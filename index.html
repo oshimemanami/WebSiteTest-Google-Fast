@@ -9,6 +9,38 @@
   <link rel="preload" href="images/slide_AB.webp" as="image">
   <link rel="preload" href="images/slideA-01.webp" as="image">
   <link rel="stylesheet" href="style.css">
+  <script>
+    // 画像・iframeの遅延読み込み（Intersection Observer）
+    document.addEventListener('DOMContentLoaded', function () {
+      // WebP遅延画像（lazy-img）
+      var lazyImgs = document.querySelectorAll('img.lazy-img');
+      var imgObserver = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.remove('lazy-img');
+            obs.unobserve(img);
+          }
+        });
+      }, { rootMargin: '200px' }); // 200px手前から読み込み開始
+      lazyImgs.forEach(function (img) { imgObserver.observe(img); });
+
+      // YouTube iframe遅延読み込み
+      var lazyIframes = document.querySelectorAll('iframe.lazy-iframe');
+      var iframeObserver = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var iframe = entry.target;
+            iframe.src = iframe.dataset.src;
+            iframe.classList.remove('lazy-iframe');
+            obs.unobserve(iframe);
+          }
+        });
+      }, { rootMargin: '300px' }); // 300px手前から読み込み開始
+      lazyIframes.forEach(function (iframe) { iframeObserver.observe(iframe); });
+    });
+  </script>
 </head>
 <body>
 
@@ -109,11 +141,11 @@
   </section>
 
   <section class="section-meta sp-top-130" id="section-meta08">
-    <div class="meta-gif-wrap sp-130">
+    <div class="meta-gif-wrap sp-130" data-lazy-section>
       <img src="images/meta_08.png" alt="" class="meta-img" loading="lazy">
-      <img src="images/soft_mekuru-img.gif" alt="" class="meta-gif-overlay">
-      <img src="images/hard_mekuru-img.gif" alt="" class="meta-gif-overlay-2">
-      <img src="images/hb_mekuru-img.gif"   alt="" class="meta-gif-overlay-3">
+      <img data-src="images/soft_mekuru-img.webp" alt="" class="meta-gif-overlay lazy-img">
+      <img data-src="images/hard_mekuru-img.webp" alt="" class="meta-gif-overlay-2 lazy-img">
+      <img data-src="images/hb_mekuru-img.webp"   alt="" class="meta-gif-overlay-3 lazy-img">
     </div>
   </section>
 
@@ -251,7 +283,7 @@
     </a>
     <img src="images/meta_16.webp" alt="" class="meta-img sp-100" loading="lazy">
     <div class="video-wrap sp-10">
-      <iframe src="https://www.youtube.com/embed/RNCawqSbcok?si=U4eRDLy_1iSN0bRg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe data-src="https://www.youtube.com/embed/RNCawqSbcok?si=U4eRDLy_1iSN0bRg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="lazy-iframe"></iframe>
     </div>
     <a href="https://okutte.jp/" class="meta-link meta-05a-narrow sp-60">
       <img src="images/meta_05a.png" alt="" class="meta-img meta-img-90" loading="lazy">
